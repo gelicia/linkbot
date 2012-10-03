@@ -17,6 +17,7 @@ gem "thin"
 gem "sinatra"
 gem "xmpp4r"
 gem "imagesize"
+gem "cinch"
 
 group :dev do
   gem "ruby-debug19"

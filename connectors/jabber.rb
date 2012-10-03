@@ -1,6 +1,7 @@
 require 'xmpp4r'
 require 'xmpp4r/roster/helper/roster'
 require 'xmpp4r/muc/helper/simplemucclient'
+require 'timeout'
 
 class JabberConnector < Linkbot::Connector
   Linkbot::Connector.register('jabber', self)
@@ -39,9 +40,11 @@ class JabberConnector < Linkbot::Connector
   
 
   def listen
-    puts "Attempting to login..."
+    puts "Attempting to login..." + "#{@username}@#{@server}/#{@resource}"
     @connection = ::Jabber::Client.new(Jabber::JID.new("#{@username}@#{@server}/#{@resource}"))
-    @connection.connect
+    status = Timeout::timeout(5) {
+      @connection.connect
+    }
     puts "Authenticating..."
     @connection.auth(@password)
     
